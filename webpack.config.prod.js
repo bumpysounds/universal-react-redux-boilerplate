@@ -11,8 +11,8 @@ module.exports = {
     './src/client'
   ],
   output: {
-    path: path.resolve('./public/js'),
-    publicPath: '/public/js/',
+    path: path.resolve('./public/'),
+    publicPath: '/public/',
     filename: 'bundle.min.js'
   },
   plugins: [
