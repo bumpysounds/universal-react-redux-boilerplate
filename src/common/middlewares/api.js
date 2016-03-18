@@ -15,7 +15,7 @@ const api = store => next => action => {
     return next(action)
   }
 
-  const { types, endpoint, method, body } = callAPI
+  const { types, endpoint, method, body, req } = callAPI
   const [ requestType, successType, failureType, shouldFetchType ] = types
 
   if (!__CLIENT__ && method !== GET) {
@@ -37,21 +37,24 @@ const api = store => next => action => {
     'Content-Type': 'application/json',
   }
 
+  // cookies will automatically be sent if on client side.
+  // just set auth bearer for csrf protection
   if (__CLIENT__ && method !== GET) {
     headers = {
       ...headers,
-      'X-XSRF-Token': xsrfToken,
+      'Auth bearer': 'read from cookie in the client',
     }
   }
 
-  // const jwt = store.getState().auth.jwt
-  // if (!__CLIENT__ && jwt) {
-  //   if (jwt) {
-  //     headers = {
-  //       ...headers,
-  //       'Cookie': `jwt=${jwt}`
-  //     }
-  //   }
+  // cookies will NOT be sent automatically; do it manually.
+  // Also: no need for csrf protection for GET methods (assuming they're safe),
+  // so no auth bearer header
+  // const isAuthenticated = store.getState().user.isAuthenticated
+  // if (!__CLIENT__ && isAuthenticated) {
+    // headers = {
+    //   ...headers,
+    //   'Cookie': `token=${req.cookies.token}`
+    // }
   // }
 
   const url = `${config.api.baseUrl}${endpoint}`

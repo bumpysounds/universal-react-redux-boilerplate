@@ -8,10 +8,10 @@ import { fetchTodosIfNeeded } from '../reducers/todos'
 
 // Route components should NEVER use mapStateToProps
 class Todos extends Component {
-  static fetchData(store) {
+  static fetchData(store, routerProps, req) {
     const { dispatch } = store
     return Promise.all([
-      dispatch(fetchTodosIfNeeded())
+      dispatch(fetchTodosIfNeeded(req))
     ])
   }
   // can't access store here to see if data is already loaded (we don't want to rerender this container),

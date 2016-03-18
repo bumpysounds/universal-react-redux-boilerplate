@@ -111,12 +111,13 @@ export function toggleTodo(id) {
   }
 }
 
-export function fetchTodos() {
+export function fetchTodos(req) {
   return {
     [CALL_API]: {
       types: [TODOS_REQUEST, TODOS_SUCCESS, TODOS_FAILURE, TODOS_SHOULD_FETCH],
       endpoint: '/v1/todos',
       method: GET,
+      req
     }
   }
 }
@@ -130,7 +131,7 @@ export function shouldFetchTodos(val) {
   }
 }
 
-export function fetchTodosIfNeeded() {
+export function fetchTodosIfNeeded(req) {
   return (dispatch, getState) => {
     const todos = getState().todos
     // Condition: server already fetched, so change shouldFetch back to true,
@@ -139,6 +140,6 @@ export function fetchTodosIfNeeded() {
       dispatch(shouldFetchTodos(true))
       return null
     }
-    return dispatch(fetchTodos())
+    return dispatch(fetchTodos(req))
   }
 }
