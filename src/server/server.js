@@ -21,6 +21,7 @@ const port = process.env.PORT || serverConfig.server.port
 if (process.env.NODE_ENV !== 'production') {
   const webpack = require('webpack')
   const webpackDevMiddleware = require('webpack-dev-middleware')
+  const webpackHotMiddleware = require('webpack-hot-middleware')
   const webpackConfigDev = require('../../webpack.config.dev')
   const compiler = webpack(webpackConfigDev)
   app.use(webpackDevMiddleware(compiler, {
@@ -28,6 +29,7 @@ if (process.env.NODE_ENV !== 'production') {
     publicPath: webpackConfigDev.output.publicPath,
     hot: false
   }))
+  app.use(webpackHotMiddleware(compiler))
   app.use(morgan('dev'))
 } else {
 
@@ -91,11 +93,12 @@ function renderFullPage(html, initialState) {
     <html>
       <head>
         <title>Redux Universal Example</title>
+
       </head>
       <body>
         <div id="root">${html}</div>
         <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
-        <script src="/public/js/${serverConfig.jsBundle}"></script>
+        <script src="/public/${serverConfig.jsBundle}"></script>
       </body>
     </html>
     `
