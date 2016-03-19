@@ -1,23 +1,20 @@
 const webpack = require('webpack');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const autoprefixer = require('autoprefixer')
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: [
     'webpack-hot-middleware/client',
-
-    // The script refreshing the browser on none hot updates
     'babel-polyfill',
     './src/client'
   ],
   output: {
-    path: path.resolve('./public/'),
-    publicPath: '/public/',
+    path: path.resolve('./public/dist/'),
+    publicPath: '/public/dist/',
     filename: 'bundle.js'
   },
   plugins: [
-    new ExtractTextPlugin('[name].css'),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
@@ -29,10 +26,16 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loaders: ['babel'],
+        loader: 'babel-loader',
         include: path.join(__dirname, 'src')
       },
-      { test: /\.css$/, loader: "style-loader!css-loader" }
+      {
+        test: /\.scss$/,
+        loader: 'style-loader!css-loader!postcss-loader!sass-loader'
+      }
     ]
+  },
+  postcss: function () {
+    return [autoprefixer]
   }
-};
+}

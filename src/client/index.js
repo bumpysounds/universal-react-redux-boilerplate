@@ -1,3 +1,4 @@
+require('./config')
 require('../common/config')
 require('./client')
-require('./main.css')
+require('./styles/main.scss')

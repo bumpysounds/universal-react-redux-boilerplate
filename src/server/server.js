@@ -8,7 +8,7 @@ import favicon from 'serve-favicon'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 
-import serverConfig from './config'
+import config from './config'
 import apiV1 from '../api/v1'
 import routes from '../common/routes'
 import configureStore from '../common/configureStore'
@@ -16,7 +16,7 @@ import Root from '../common/components/Root'
 import { fetchRouteComponentsData } from '../common/utils/serverFetchHelpers'
 
 const app = express()
-const port = process.env.PORT || serverConfig.server.port
+const port = process.env.PORT || config.server.port
 
 if (process.env.NODE_ENV !== 'production') {
   const webpack = require('webpack')
@@ -88,17 +88,20 @@ function handleRender(req, res, err) {
 
 function renderFullPage(html, initialState) {
   html = html ? html : ''
+  const stylesheet = process.env.NODE_ENV === 'production' ?
+                     `<link rel="stylesheet" type="text/css" href="${config.cssBundlePath}" />` :
+                     ''
   return `
     <!doctype html>
     <html>
       <head>
         <title>Redux Universal Example</title>
-
+        ${stylesheet}
       </head>
       <body>
         <div id="root">${html}</div>
         <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
-        <script src="/public/${serverConfig.jsBundle}"></script>
+        <script src="${config.jsBundlePath}"></script>
       </body>
     </html>
     `

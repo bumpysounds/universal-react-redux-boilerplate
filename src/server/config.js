@@ -6,7 +6,8 @@ if (process.env.NODE_ENV === 'production') {
       host: 'localhost',
       port: 3000
     },
-    jsBundle: 'bundle.min.js'
+    jsBundlePath: '/public/dist/bundle.min.js',
+    cssBundlePath: '/public/dist/main.min.css'
   }
 } else {
   config = {
@@ -14,7 +15,8 @@ if (process.env.NODE_ENV === 'production') {
       host: 'localhost',
       port: 3000
     },
-    jsBundle: 'bundle.js'
+    jsBundlePath: '/public/dist/bundle.js',
+    cssBundlePath: '/public/dist/main.css'
   }
 }
 
